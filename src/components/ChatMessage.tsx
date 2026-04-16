@@ -33,8 +33,8 @@ export function ChatMessage({ message, isStreaming }: ChatMessageProps) {
             <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
           </div>
         </div>
-        <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-          <User size={15} className="text-slate-600" />
+      <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+        <User size={20} className="text-slate-600" />
         </div>
       </div>
     );
@@ -42,7 +42,7 @@ export function ChatMessage({ message, isStreaming }: ChatMessageProps) {
 
   return (
     <div className="flex gap-3 group">
-      <div className="w-8 h-8 bg-white border border-slate-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1 overflow-hidden p-1">
+      <div className="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1 overflow-hidden p-1.5">
         <img src="/inv.png" alt="Assistant" className="w-full h-full object-contain" />
       </div>
       <div className="max-w-[80%]">

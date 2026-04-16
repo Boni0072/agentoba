@@ -1,5 +1,30 @@
 import { useState, useRef } from 'react';
 import { Upload, FileText, X, Check, AlertCircle, Loader2 } from 'lucide-react';
+import * as pdfjs from 'pdfjs-dist';
+
+// Configuração do worker necessário para o PDF.js funcionar de forma assíncrona
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+/**
+ * Extrai todo o texto de um arquivo PDF percorrendo todas as páginas.
+ */
+async function extractTextFromPDF(file: File): Promise<string> {
+  const arrayBuffer = await file.arrayBuffer();
+  const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
+  const pdf = await loadingTask.promise;
+  let fullText = '';
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    const pageText = textContent.items
+      .map((item: any) => item.str)
+      .join(' ');
+    fullText += pageText + '\n';
+  }
+
+  return fullText;
+}
 
 interface FileUploaderProps {
   onFileProcessed: (data: { title: string; content: string; source: string }) => Promise<void>;
@@ -10,9 +35,10 @@ const ACCEPTED_TYPES = [
   'text/csv',
   'text/markdown',
   'application/json',
+  'application/pdf',
 ];
 
-const ACCEPTED_EXTENSIONS = ['.txt', '.csv', '.md', '.json'];
+const ACCEPTED_EXTENSIONS = ['.txt', '.csv', '.md', '.json', '.pdf'];
 
 function getFileExtension(name: string): string {
   const idx = name.lastIndexOf('.');
@@ -32,7 +58,7 @@ export function FileUploader({ onFileProcessed }: FileUploaderProps) {
 
   const processFile = async (file: File) => {
     if (!isAccepted(file)) {
-      setResult({ success: false, message: `Formato nao suportado: ${getFileExtension(file.name) || file.type}. Use .txt, .csv, .md ou .json` });
+      setResult({ success: false, message: `Formato nao suportado: ${getFileExtension(file.name) || file.type}. Use .txt, .csv, .md, .json ou .pdf` });
       return;
     }
 
@@ -45,7 +71,13 @@ export function FileUploader({ onFileProcessed }: FileUploaderProps) {
     setResult(null);
 
     try {
-      const text = await file.text();
+      let text = '';
+
+      if (file.type === 'application/pdf' || getFileExtension(file.name) === '.pdf') {
+        text = await extractTextFromPDF(file);
+      } else {
+        text = await file.text();
+      }
 
       if (!text.trim()) {
         setResult({ success: false, message: 'Arquivo vazio.' });
@@ -62,7 +94,8 @@ export function FileUploader({ onFileProcessed }: FileUploaderProps) {
       });
 
       setResult({ success: true, message: `"${file.name}" adicionado a base de conhecimento.` });
-    } catch {
+    } catch (err) {
+      console.error('Erro no upload:', err);
       setResult({ success: false, message: 'Erro ao processar o arquivo.' });
     } finally {
       setProcessing(false);
@@ -98,7 +131,7 @@ export function FileUploader({ onFileProcessed }: FileUploaderProps) {
         <input
           ref={inputRef}
           type="file"
-          accept=".txt,.csv,.md,.json"
+          accept=".txt,.csv,.md,.json,.pdf"
           onChange={handleFileSelect}
           className="hidden"
         />
@@ -117,7 +150,7 @@ export function FileUploader({ onFileProcessed }: FileUploaderProps) {
                 Arraste um arquivo aqui ou clique para selecionar
               </p>
               <p className="text-xs text-slate-400 mt-1">
-                Formatos aceitos: .txt, .csv, .md, .json (max 5MB)
+                Formatos aceitos: .txt, .csv, .md, .json, .pdf (max 5MB)
               </p>
             </div>
           </div>

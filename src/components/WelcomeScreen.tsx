@@ -40,7 +40,7 @@ const suggestions = [
 export function WelcomeScreen({ onSuggestion }: WelcomeScreenProps) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-      <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-xl border border-slate-100 overflow-hidden p-2">
+      <div className="w-32 h-32 bg-white rounded-3xl flex items-center justify-center mb-8 shadow-2xl border border-slate-100 overflow-hidden p-4">
         <img src="/inv.png" alt="Sistema Icon" className="w-full h-full object-contain" />
       </div>
       <h1 className="text-2xl font-bold text-slate-900 text-center mb-2">
@@ -58,8 +58,8 @@ export function WelcomeScreen({ onSuggestion }: WelcomeScreenProps) {
             onClick={() => onSuggestion(s.text)}
             className="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all text-left group"
           >
-            <div className="w-8 h-8 bg-blue-50 group-hover:bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors">
-              <s.icon size={16} className="text-blue-600" />
+            <div className="w-10 h-10 bg-blue-50 group-hover:bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors">
+              <s.icon size={20} className="text-blue-600" />
             </div>
             <div>
               <p className="text-xs font-semibold text-slate-700 mb-0.5">{s.label}</p>

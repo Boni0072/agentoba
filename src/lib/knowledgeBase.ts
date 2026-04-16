@@ -6,8 +6,7 @@ export async function fetchKnowledgeContext(): Promise<string> {
   try {
     const q = query(
       collection(db, 'knowledge_base'),
-      where('is_active', '==', true),
-      orderBy('category', 'asc')
+      where('is_active', '==', true)
     );
     const snapshot = await getDocs(q);
 
@@ -20,6 +19,9 @@ export async function fetchKnowledgeContext(): Promise<string> {
       source: doc.data().source as string,
     }));
 
+    // Ordenação manual para evitar a necessidade de índices compostos no Firestore
+    entries.sort((a, b) => (a.category || '').localeCompare(b.category || ''));
+
     const grouped: Record<string, typeof entries> = {};
     for (const entry of entries) {
       const cat = entry.category || 'Geral';
@@ -27,7 +29,7 @@ export async function fetchKnowledgeContext(): Promise<string> {
       grouped[cat].push(entry);
     }
 
-    let context = '\n\n---\n**BASE DE CONHECIMENTO INTERNA (Use como referencia prioritaria para responder):**\n\n';
+    let context = '\n\n---\n**IMPORTANTE: BASE DE CONHECIMENTO INTERNA (PRIORIDADE MÁXIMA):**\nUtilize as informações abaixo como fonte principal de verdade. Se houver políticas internas aqui, elas prevalecem sobre as normas gerais.\n\n';
 
     for (const [category, items] of Object.entries(grouped)) {
       context += `### ${category}\n\n`;
@@ -39,7 +41,8 @@ export async function fetchKnowledgeContext(): Promise<string> {
     }
 
     return context;
-  } catch {
+  } catch (error) {
+    console.error("Erro ao carregar base de conhecimento:", error);
     return '';
   }
 }

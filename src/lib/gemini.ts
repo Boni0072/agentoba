@@ -30,7 +30,13 @@ class InternalAgent {
     await this.ensureDiscovery();
 
     const knowledgeContext = await fetchKnowledgeContext();
-    const enrichedPrompt = this.systemPrompt + knowledgeContext;
+    
+    // Construção de prompt mais enfática para forçar o uso da base de conhecimento
+    const enrichedPrompt = `
+${this.systemPrompt}
+
+INSTRUÇÃO CRÍTICA: Você recebeu acesso a uma Base de Conhecimento Interna abaixo. Você DEVE consultá-la antes de responder. Caso a resposta esteja na base, use-a obrigatoriamente, citando as fontes quando disponíveis.
+${knowledgeContext}`;
 
     let modelsToTry = this.buildModelList(modelOverride);
     let lastError: any = null;

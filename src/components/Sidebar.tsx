@@ -24,7 +24,7 @@ export function Sidebar({ conversations, activeId, onSelect, onNew, onDelete, on
       <div className="flex items-center justify-between p-4 border-b border-slate-700">
         {!collapsed && (
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden bg-white/10">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden bg-white/10 p-1">
               <img src="/inv.png" alt="Logo" className="w-full h-full object-contain" />
             </div>
             <div>
@@ -34,7 +34,7 @@ export function Sidebar({ conversations, activeId, onSelect, onNew, onDelete, on
           </div>
         )}
         {collapsed && (
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto overflow-hidden bg-white/10">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto overflow-hidden bg-white/10 p-1">
             <img src="/inv.png" alt="Logo" className="w-full h-full object-contain" />
           </div>
         )}
