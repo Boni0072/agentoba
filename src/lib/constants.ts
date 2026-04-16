@@ -9,12 +9,11 @@ export const FIREBASE_CONFIG = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
 };
 
-export const GEMINI_MODEL = "gemini-2.5-flash";
+export const GEMINI_MODEL = "gemini-2.0-flash";
 
 export const FALLBACK_MODELS = [
-  "gemini-2.5-flash",
-  "gemini-2.5-flash-lite",
   "gemini-2.0-flash",
+  "gemini-1.5-flash",
 ];
 
 export const SYSTEM_PROMPT = `Você é um especialista sênior em Ativo Imobilizado, com mais de 20 anos de experiência em contabilidade, gestão de ativos e projetos de capital. Seu conhecimento abrange:
