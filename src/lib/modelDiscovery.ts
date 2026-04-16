@@ -12,7 +12,6 @@ interface ModelCache {
 const PREFERENCE_ORDER = [
   "gemini-2.0-flash-exp",
   "gemini-2.0-flash",
-  "gemini-2.0-flash",
   "gemini-2.0",
 ];
 

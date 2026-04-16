@@ -63,7 +63,7 @@ export function ChatMessage({ message, isStreaming }: ChatMessageProps) {
             <span className="inline-block w-0.5 h-4 bg-blue-500 animate-pulse ml-0.5" />
           )}
         </div>
-        <p className="text-xs text-slate-400 mt-1 ml-1">Agente Gemini 2.5 generated - Especialista em Ativo Imobilizado</p>
+        <p className="text-xs text-slate-400 mt-1 ml-1">Agente Gemini 2.0 generated - Especialista em Ativo Imobilizado</p>
       </div>
     </div>
   );
